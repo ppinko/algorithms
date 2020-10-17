@@ -18,56 +18,44 @@ vector<list<int>> adjecency_list(const int nodes, const vector<vector<int>> &edg
     return L;
 } 
 
-// Breadth First Search function
-int bfs_search(const int start_node, const int end_node, const vector<list<int>> &L){
-    // checking self node assignment
-    if (start_node == end_node)
-        return 0;
-    
+// Complete the bfs function below.
+vector<int> bfs(int n, int m, vector<vector<int>> edges, int s) {
+    sort(edges.begin(), edges.end());
+    edges.erase(unique(edges.begin(), edges.end()), edges.end());
+    auto L = adjecency_list(n, edges);
+    vector<int> answer (n + 1, -1);
+
     // using queue for storing next to visit and set for visited
     queue<int> next_to_visit;
-    next_to_visit.push(start_node);
+    next_to_visit.push(s);
     set<int> visited {};
     int path = 0;
     while (true){
         int q_size = next_to_visit.size();
         if (q_size == 0)
-            break; // connection not found 
+            break; // end of connections
         for (int i = 0; i < q_size; ++i){
-            if (next_to_visit.front() == end_node)
-                return path;
-
             visited.insert(next_to_visit.front());
             for (const auto &el : L.at(next_to_visit.front())){
-                if (visited.find(el) == visited.end())
+                if (visited.find(el) == visited.end()){
+                    answer.at(el) = path +1;
                     next_to_visit.push(el);
+                }
             }
             next_to_visit.pop();
         }
         ++path;
     }
-    return -1; // connection not found 
-}
 
-// Complete the bfs function below.
-vector<int> bfs(int n, int m, vector<vector<int>> edges, int s) {
-    sort(edges.begin(), edges.end());
-    edges.erase(unique(edges.begin(), edges.end()), edges.end());
+    // remove starting node and first element - 'null'
+    answer.erase(answer.begin() + s);
+    answer.erase(answer.begin());
 
-    auto L = adjecency_list(n, edges);
-    vector<int> answer {};
-
-    for (int i = 1; i < L.size(); ++i){
-        if (i == s)
-            continue; // skip checking distanca to the same node
-        int distance = bfs_search(i, s, L);
-
-        // each edge weighs 6 units, if no connection leave -1
-        if (distance != -1)
-            distance *= 6;
-        
-        answer.push_back(distance);
+    for (auto &el : answer){
+        if (el != -1)
+            el *= 6;
     }
+
     return answer;
 }
 
