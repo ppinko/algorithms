@@ -26,7 +26,7 @@ vector<int> bfs(int n, int m, vector<vector<int>> edges, int s) {
     vector<int> answer (n + 1, -1);
 
     // using queue for storing next to visit and set for visited
-    queue<int> next_to_visit;
+    queue<int, list<int>> next_to_visit;
     next_to_visit.push(s);
     set<int> visited {};
     int path = 0;

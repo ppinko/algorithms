@@ -51,6 +51,8 @@ int bfs_search(const int start_node, const int end_node, const vector<list<int>>
 
 // Complete the bfs function below.
 vector<int> bfs(int n, int m, vector<vector<int>> edges, int s) {
+    for (auto &v : edges)
+        sort(v.begin(), v.end());
     sort(edges.begin(), edges.end());
     edges.erase(unique(edges.begin(), edges.end()), edges.end());
 
